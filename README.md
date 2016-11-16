@@ -3,7 +3,7 @@
 Demo application shows how to write barcodes to images in WPF. Demo uses functionality of <a href="https://www.vintasoft.com/vsbarcode-dotnet-index.html">VintaSoft Barcode .NET SDK</a>. Source codes for C# and VB.NET are available.
 
 <h2>Screenshot</h2>
-<img src=http://www.vintasoft.com/images/screenshots/barcode/vintasoft-simple-barcode-writer-demo.png alt="VintaSoft WPF Simple Barcode Writer Demo">
+<img src=http://www.vintasoft.com/images/screenshots/barcode/vintasoft-wpf-simple-barcode-writer-demo.png alt="VintaSoft WPF Simple Barcode Writer Demo">
 
 
 <h2>Download</h2>
