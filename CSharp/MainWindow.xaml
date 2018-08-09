@@ -30,8 +30,18 @@
             <DockPanel Height="25" Name="dockPanel2" VerticalAlignment="Top" DockPanel.Dock="Top">
                 <Menu Name="menu1">
                     <MenuItem Header="File">
-                        <MenuItem Header="Save As..." Name="saveAsMenuItem" Click="saveAsMenuItem_Click"/>
                         <MenuItem Header="Exit" Name="exitMenuItem"  Click="exitMenuItem_Click" />
+                    </MenuItem>
+
+                    <MenuItem Header="Barcode Image">
+                        <MenuItem Header="Set Image Size..." Name="setImageSizeMenuItem" Click="setImageSizeMenuItem_Click"/>
+                        <MenuItem Header="Save Image As..." Name="saveAsMenuItem" Click="saveAsMenuItem_Click"/>
+                        <MenuItem Header="Save As SVG File..." Name="saveAsSvgMenuItem" Click="saveAsSvgMenuItem_Click"/>
+                    </MenuItem>
+
+                    <MenuItem Header="Design">
+                        <MenuItem Name="barcodeDesign" Header="Barcode Design..." Click="barcodeDesign_Click" />
+                        <MenuItem Name="resetDesign" Header="Reset Design" Click="resetDesign_Click" />
                     </MenuItem>
                 </Menu>
             </DockPanel>
@@ -91,7 +101,6 @@
                             <DockPanel Height="28" Name="barcodeWidthDockPanel" DockPanel.Dock="Top">
                                 <Label Height="28" Name="label3" Width="125">Min bar/cell width</Label>
                                 <cc:NumericUpDown x:Name="minWidthNumericUpDown" Minimum="2" Maximum="1024" Value="3"  Width="65" Height="26"></cc:NumericUpDown>
-                                <Button Name="setWidthButton" Margin="1,1,4,1" Click="setWidthButton_Click">Width...</Button>
                             </DockPanel>
                             <DockPanel Height="28" DockPanel.Dock="Top">
                                 <Label Height="28" Width="125">Barcode image:</Label>
@@ -121,7 +130,6 @@
 
                                             <Label Style="{StaticResource BarcodeSettingStyleLeft}" Grid.Column="0">Barcode height</Label>
                                             <cc:NumericUpDown x:Name="linearBarcodeHeight" Grid.Column="1" Minimum="3" Maximum="4096" Value="100" Width="Auto"/>
-                                            <Button Name="linearBarcodeHeightButton" Grid.Column="2" Margin="3" Click="setHeightButton_Click">Height...</Button>
                                         </Grid>
 
                                         <DockPanel Name="postalADMiltiplierDockPanel" Visibility="Collapsed" Style="{StaticResource BarcodeSettingStyle}">
@@ -188,15 +196,14 @@
                                             <Label Style="{StaticResource BarcodeSettingStyleLeft}">Encoding mode</Label>
                                             <ComboBox Name="code16KModeComboBox" Style="{StaticResource BarcodeSettingStyleRight}" />
                                         </DockPanel>
-                                        
                                     </StackPanel>
                                 </TabItem>
-                                
+
                                 <!--2D-->
                                 <TabItem Header="2D" Name="barcodes2DTabItem">
                                     <StackPanel>
                                         <ComboBox Name="twoDimensionalBarcodeComboBox" Margin="3" />
-                                        
+
                                         <Grid Name="pdf417SettingsGrid" Visibility="Collapsed">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="26" />
@@ -212,22 +219,22 @@
                                             </Grid.ColumnDefinitions>
                                             <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">Encoding mode</Label>
                                             <ComboBox Name="pdf417EncodingModeComboBox" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,3,0" />
-                                            
+
                                             <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">Error correction</Label>
                                             <ComboBox Name="pdf417ErrorCorrectionComboBox" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,3,0" />
-                                            
+
                                             <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center">Rows</Label>
                                             <cc:NumericUpDown x:Name="pdf417RowsNumericUpDown" Grid.Row="2" Grid.Column="1" Minimum="-1" Maximum="90" Value="-1" VerticalAlignment="Center" Width="Auto" Margin="0,0,3,0" />
-                                            
+
                                             <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center">Cols</Label>
                                             <cc:NumericUpDown x:Name="pdf417ColsNumericUpDown" Grid.Row="3" Grid.Column="1" Minimum="-1" Maximum="30" Value="-1" VerticalAlignment="Center" Width="Auto" Margin="0,0,3,0" />
 
                                             <Label Grid.Row="4" Grid.Column="0" VerticalAlignment="Center">Row height</Label>
                                             <cc:NumericUpDown x:Name="pdf417RowHeightNumericUpDown" Minimum="2" Maximum="64" Value="4" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Width="Auto" Margin="0,0,3,0" />
-                                            
+
                                             <CheckBox Name="pdf417CompactCheckBox" Grid.Row="5" Grid.Column="1" VerticalAlignment="Center">PDF417 Compact</CheckBox>
                                         </Grid>
-                                        
+
                                         <Grid Name="aztecSettingsGrid" Visibility="Collapsed">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="26" />
@@ -267,7 +274,7 @@
                                             <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">Symbol mode</Label>
                                             <ComboBox Name="maxiCodeEncodingModeComboBox" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,3,0" />
                                         </Grid>
-                                        
+
                                         <Grid Name="dataMatrixSettingsGrid" Visibility="Collapsed">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="26" />
@@ -284,9 +291,10 @@
                                             <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">Symbol size</Label>
                                             <ComboBox Name="datamatrixSymbolSizeComboBox" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,3,0" />
                                         </Grid>
-                                                                                
+
                                         <Grid Name="microQrSettingsGrid" Visibility="Collapsed">
                                             <Grid.RowDefinitions>
+                                                <RowDefinition Height="26" />
                                                 <RowDefinition Height="26" />
                                                 <RowDefinition Height="26" />
                                                 <RowDefinition Height="26" />
@@ -301,13 +309,17 @@
 
                                             <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">Symbol size</Label>
                                             <ComboBox Name="microQrSymbolSizeComboBox" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,3,0" />
-                                            
+
                                             <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center">Error correction level</Label>
                                             <ComboBox Name="microQrECCLevelComboBox" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,3,0" />
+                                           
+                                            <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center">Data mask pattern</Label>
+                                            <ComboBox Name="microQrDataMaskPatternComboBox" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,3,0" />
                                         </Grid>
 
                                         <Grid Name="qrSettingsGrid" Visibility="Collapsed">
                                             <Grid.RowDefinitions>
+                                                <RowDefinition Height="26" />
                                                 <RowDefinition Height="26" />
                                                 <RowDefinition Height="26" />
                                                 <RowDefinition Height="26" />
@@ -325,8 +337,11 @@
 
                                             <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center">Error correction level</Label>
                                             <ComboBox Name="qrECCLevelComboBox" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,3,0" />
+
+                                            <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center">Data mask pattern</Label>
+                                            <ComboBox Name="qrDataMaskPatternComboBox" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,3,0" />
                                         </Grid>
-                                        
+
                                         <Grid Name="hanXinCodeSettingsGrid" Visibility="Collapsed">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="26" />
@@ -347,7 +362,7 @@
                                             <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center">Error correction level</Label>
                                             <ComboBox Name="hanXinCodeECCLevelComboBox" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,3,0" />
                                         </Grid>
-                                        
+
                                         <Grid Name="microPDF417SettingsGrid" Visibility="Collapsed">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="26" />

@@ -10,49 +10,92 @@ namespace WpfSimpleBarcodeWriterDemo
     /// </summary>
     public partial class GetSizeWindow : Window
     {
-        public GetSizeWindow(string name, double value, int resolution, UnitOfMeasure units)
+        public GetSizeWindow()
         {
             InitializeComponent();
 
-            Title = string.Format(Title, name);
-            sizeLabel.Content = string.Format((string)sizeLabel.Content, name);
-
-            valueTextBox.Text = value.ToString();
-
-            unitsComboBox.Items.Add(UnitOfMeasure.Inches);
-            unitsComboBox.Items.Add(UnitOfMeasure.Centimeters);
-            unitsComboBox.Items.Add(UnitOfMeasure.Millimeters);
-            unitsComboBox.Items.Add(UnitOfMeasure.Pixels);
-            unitsComboBox.SelectedItem = units;
-
-            resolutionNumericUpDown.Value = (int)resolution;
+            unitsValueEditor.Items.Add(UnitOfMeasure.Inches);
+            unitsValueEditor.Items.Add(UnitOfMeasure.Centimeters);
+            unitsValueEditor.Items.Add(UnitOfMeasure.Millimeters);
+            unitsValueEditor.Items.Add(UnitOfMeasure.Pixels);
+            unitsValueEditor.SelectedItem = UnitOfMeasure.Pixels;
         }
 
-        double _value;
-        public double Value
+        /// <summary>
+        /// Gets or sets an image width, in units.
+        /// </summary>
+        public double WidthValue
         {
             get
             {
-                return _value;
+                string value = widthValueEditor.Text.Replace(',', '.');
+                try
+                {
+                    return double.Parse(value, CultureInfo.InvariantCulture);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    return 0;
+                }
+            }
+            set
+            {
+                widthValueEditor.Text = value.ToString(CultureInfo.InvariantCulture);
             }
         }
 
-        UnitOfMeasure _units;
-        public UnitOfMeasure Units
+        /// <summary>
+        /// Gets or sets an image height, in units.
+        /// </summary>
+        public double HeightValue
         {
-
             get
             {
-                return _units;
+                string value = heightValueEditor.Text.Replace(',', '.');
+                try
+                {
+                    return double.Parse(value, CultureInfo.InvariantCulture);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    return 0;
+                }
+            }
+            set
+            {
+                heightValueEditor.Text = value.ToString(CultureInfo.InvariantCulture);
             }
         }
 
-        int _resolution;
-        public int Resolution
+        /// <summary>
+        /// Gets or sets the unit of measure of width and height.
+        /// </summary>
+        public UnitOfMeasure UnitsValue
         {
             get
             {
-                return _resolution;
+                return (UnitOfMeasure)unitsValueEditor.SelectedItem;
+            }
+            set
+            {
+                unitsValueEditor.SelectedItem = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets an image resolution.
+        /// </summary>
+        public double ResolutionValue
+        {
+            get
+            {
+                return (double)resolutionValueEditor.Value;
+            }
+            set
+            {
+                resolutionValueEditor.Value = (int)Math.Round(value);
             }
         }
 
@@ -63,17 +106,6 @@ namespace WpfSimpleBarcodeWriterDemo
 
         private void okButton_Click(object sender, RoutedEventArgs e)
         {
-            _units = (UnitOfMeasure)unitsComboBox.SelectedItem;
-            _resolution = resolutionNumericUpDown.Value;
-            try
-            {
-                _value = double.Parse(valueTextBox.Text, CultureInfo.InvariantCulture);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
             DialogResult = true;
         }
     }

@@ -11,6 +11,7 @@ using Vintasoft.WpfBarcode.SymbologySubsets;
 using Vintasoft.WpfBarcode.SymbologySubsets.GS1;
 using Vintasoft.WpfBarcode.SymbologySubsets.RoyalMailMailmark;
 using Vintasoft.WpfBarcode.GS1;
+using Vintasoft.WpfBarcode.BarcodeStructure;
 
 
 namespace WpfSimpleBarcodeWriterDemo
@@ -23,17 +24,13 @@ namespace WpfSimpleBarcodeWriterDemo
 
         #region Fields
 
-        double _lastWidth = 6;
-
-        double _lastHeight = 3;
-
-        UnitOfMeasure _lastUnits = UnitOfMeasure.Centimeters;
-
         GS1ApplicationIdentifierValue[] _GS1ApplicationIdentifierValues;
 
         MailmarkCmdmValueItem _mailmarkCmdmValueItem = new MailmarkCmdmValueItem();
 
         PpnBarcodeValue _ppnBarcodeValue = new PpnBarcodeValue();
+
+        bool _isInitialized = false;
 
         #endregion
 
@@ -120,6 +117,7 @@ namespace WpfSimpleBarcodeWriterDemo
             linearBarcodeTypeComboBox.Items.Add(BarcodeSymbologySubsets.ISSNPlus2);
             linearBarcodeTypeComboBox.Items.Add(BarcodeSymbologySubsets.ISSNPlus5);
             linearBarcodeTypeComboBox.Items.Add(BarcodeType.Interleaved2of5);
+            linearBarcodeTypeComboBox.Items.Add(BarcodeSymbologySubsets.Interleaved2of5ChecksumISO16390);
             linearBarcodeTypeComboBox.Items.Add(BarcodeSymbologySubsets.OPC);
             linearBarcodeTypeComboBox.Items.Add(BarcodeSymbologySubsets.DeutschePostIdentcode);
             linearBarcodeTypeComboBox.Items.Add(BarcodeSymbologySubsets.DeutschePostLeitcode);
@@ -268,7 +266,14 @@ namespace WpfSimpleBarcodeWriterDemo
             qrSymbolSizeComboBox.Items.Add(QRSymbolVersion.Undefined);
             for (int i = 1; i <= 40; i++)
                 qrSymbolSizeComboBox.Items.Add((QRSymbolVersion)i);
+            for (int i = 101; i <= 114; i++)
+                qrSymbolSizeComboBox.Items.Add((QRSymbolVersion)i);
             qrSymbolSizeComboBox.SelectionChanged += new SelectionChangedEventHandler(qrSymbolSizeComboBox_SelectionChanged);
+            qrDataMaskPatternComboBox.Items.Add("Auto");
+            for (int i = 0; i < 8; i++)
+                qrDataMaskPatternComboBox.Items.Add(i);
+            qrDataMaskPatternComboBox.SelectedIndex = 0;
+            qrDataMaskPatternComboBox.SelectionChanged += new SelectionChangedEventHandler(qrDataMaskPatternComboBox_SelectionChanged);
 
             AddEnumValues(qrECCLevelComboBox, typeof(QRErrorCorrectionLevel));
             qrECCLevelComboBox.SelectionChanged += new SelectionChangedEventHandler(qrECCLevelComboBox_SelectionChanged);
@@ -301,6 +306,12 @@ namespace WpfSimpleBarcodeWriterDemo
             microQrECCLevelComboBox.Items.Add(QRErrorCorrectionLevel.M);
             microQrECCLevelComboBox.Items.Add(QRErrorCorrectionLevel.Q);
             microQrECCLevelComboBox.SelectionChanged += new SelectionChangedEventHandler(microQrECCLevelComboBox_SelectionChanged);
+
+            microQrDataMaskPatternComboBox.Items.Add("Auto");
+            for (int i = 0; i < 4; i++)
+                microQrDataMaskPatternComboBox.Items.Add(i);
+            microQrDataMaskPatternComboBox.SelectedIndex = 0;
+            microQrDataMaskPatternComboBox.SelectionChanged += new SelectionChangedEventHandler(microQrDataMaskPatternComboBox_SelectionChanged);
 
             // MaxiCode
             maxiCodeResolutonNumericUpDown.ValueChanged += new EventHandler<EventArgs>(maxiCodeResolutonNumericUpDown_ValueChanged);
@@ -413,8 +424,11 @@ namespace WpfSimpleBarcodeWriterDemo
             rssExpandedStackedSegmentPerRow.SelectedItem = 4;
             code16KRowsComboBox.SelectedIndex = 0;
 
+            _isInitialized = true;
 
             barcodeWriter.EndInit();
+
+            UpdateUI();
         }
 
         #endregion
@@ -462,7 +476,7 @@ namespace WpfSimpleBarcodeWriterDemo
             barcodeWriter.Settings.Code128EncodingMode = (Code128EncodingMode)code128ModeComboBox.SelectedItem;
         }
 
-        #endregion       
+        #endregion
 
         #region EAN
 
@@ -570,7 +584,7 @@ namespace WpfSimpleBarcodeWriterDemo
         }
 
         #endregion
-        
+
         #region QR
 
         void qrEncodingModeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -586,6 +600,14 @@ namespace WpfSimpleBarcodeWriterDemo
         void qrECCLevelComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             barcodeWriter.Settings.QRErrorCorrectionLevel = (QRErrorCorrectionLevel)qrECCLevelComboBox.SelectedItem;
+        }
+
+        void qrDataMaskPatternComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (qrDataMaskPatternComboBox.SelectedIndex == 0)
+                barcodeWriter.Settings.QRMaskPattern = -1;
+            else
+                barcodeWriter.Settings.QRMaskPattern = (int)qrDataMaskPatternComboBox.SelectedItem;
         }
 
         #endregion
@@ -605,6 +627,17 @@ namespace WpfSimpleBarcodeWriterDemo
         void microQrECCLevelComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             barcodeWriter.Settings.QRErrorCorrectionLevel = (QRErrorCorrectionLevel)microQrECCLevelComboBox.SelectedItem;
+        }
+
+        void microQrDataMaskPatternComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (microQrDataMaskPatternComboBox.SelectedItem != null)
+            {
+                if (microQrDataMaskPatternComboBox.SelectedIndex == 0)
+                    barcodeWriter.Settings.QRMaskPattern = -1;
+                else
+                    barcodeWriter.Settings.QRMaskPattern = (int)microQrDataMaskPatternComboBox.SelectedItem;
+            }
         }
 
         #endregion
@@ -699,6 +732,35 @@ namespace WpfSimpleBarcodeWriterDemo
         #endregion
 
         #region Common
+
+        private void barcodeDesign_Click(object sender, RoutedEventArgs e)
+        {
+            BarcodeStructureBase barcodeStructure = null;
+            try
+            {
+                barcodeStructure = barcodeWriter.Writer.GetBarcodeStructure();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            BarcodeDesignerWindow window = new BarcodeDesignerWindow();
+            window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            window.Owner = this;
+            window.Barcode = barcodeStructure;
+            if (barcodeWriter.BarcodeRenderer != null)
+                window.BarcodeRenderer = barcodeWriter.BarcodeRenderer;
+            if (window.ShowDialog() == true)
+            {
+                barcodeWriter.BarcodeRenderer = window.BarcodeRenderer;
+            }
+        }
+
+        private void resetDesign_Click(object sender, RoutedEventArgs e)
+        {
+            barcodeWriter.BarcodeRenderer = null;
+        }
 
         void barcodeWriter_BarcodeImageChanged(object sender, BarcodeImageChangedEventArgs e)
         {
@@ -955,16 +1017,19 @@ namespace WpfSimpleBarcodeWriterDemo
             SelectedBarcodeSubset = barcodeSubset;
             try
             {
-                if (barcodeWriter.Settings != null)
+                if (_isInitialized)
                 {
-                    if (SelectedBarcodeSubset == null)
+                    if (barcodeWriter.Settings != null)
                     {
-                        barcodeWriter.Settings.BeginInit();
-                        barcodeWriter.Settings.Barcode = baseBarcodeType;
+                        if (SelectedBarcodeSubset == null)
+                        {
+                            barcodeWriter.Settings.BeginInit();
+                            barcodeWriter.Settings.Barcode = baseBarcodeType;
+                        }
                     }
-                }
 
-                UpdateUI();
+                    UpdateUI();
+                }
 
                 // select settings panel
                 switch (baseBarcodeType)
@@ -988,20 +1053,25 @@ namespace WpfSimpleBarcodeWriterDemo
                         microPDF417SettingsGrid.Visibility = Visibility.Visible;
                         break;
                     case BarcodeType.DataMatrix:
-                        dataMatrixSettingsGrid.Visibility = Visibility.Visible;
-                        datamatrixSymbolSizeComboBox_SelectionChanged(this, null);
+                        if (!(SelectedBarcodeSubset is MailmarkCmdmBarcodeSymbology))
+                        {
+                            dataMatrixSettingsGrid.Visibility = Visibility.Visible;
+                            datamatrixSymbolSizeComboBox_SelectionChanged(this, null);
+                        }
                         break;
                     case BarcodeType.MaxiCode:
                         maxiCodeSettingsGrid.Visibility = Visibility.Visible;
                         break;
                 }
-                EncodeValue();
+
+                if (_isInitialized)
+                    EncodeValue();
 
                 e.Handled = true;
             }
             finally
             {
-                if (barcodeWriter.Settings != null)
+                if (_isInitialized && barcodeWriter.Settings != null)
                     if (SelectedBarcodeSubset == null)
                         barcodeWriter.Settings.EndInit();
             }
@@ -1037,7 +1107,7 @@ namespace WpfSimpleBarcodeWriterDemo
             Close();
         }
 
-        void saveAsMenuItem_Click(object sender, RoutedEventArgs e)
+        private void saveAsMenuItem_Click(object sender, RoutedEventArgs e)
         {
             if (!barcodeWriter.WrongWriterSettings)
             {
@@ -1061,38 +1131,26 @@ namespace WpfSimpleBarcodeWriterDemo
             }
         }
 
-        private void setWidthButton_Click(object sender, RoutedEventArgs e)
+        private void saveAsSvgMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            GetSizeWindow getSize = new GetSizeWindow("Width", _lastWidth, (int)barcodeWriter.Settings.Resolution, _lastUnits);
-            if (getSize.ShowDialog() == true)
+            if (!barcodeWriter.WrongWriterSettings)
             {
-                barcodeWriter.BeginInit();
-                barcodeWriter.Settings.Resolution = getSize.Resolution;
-                barcodeWriter.Settings.SetWidth(getSize.Value, getSize.Units);
-                barcodeWriter.EndInit();
-                minWidthNumericUpDown.Value = barcodeWriter.Settings.MinWidth;
-                _lastWidth = getSize.Value;
-                _lastUnits = getSize.Units;
-            }
-        }
-
-        private void setHeightButton_Click(object sender, RoutedEventArgs e)
-        {
-            GetSizeWindow getSize = new GetSizeWindow("Height", _lastHeight, (int)barcodeWriter.Settings.Resolution, _lastUnits);
-            if (getSize.ShowDialog() == true)
-            {
-                barcodeWriter.BeginInit();
-                barcodeWriter.Settings.Resolution = getSize.Resolution;
-                barcodeWriter.Settings.SetHeight(getSize.Value, getSize.Units);
-                barcodeWriter.EndInit();
-                linearBarcodeHeight.Value = barcodeWriter.Settings.Height;
-                _lastHeight = getSize.Value;
-                _lastUnits = getSize.Units;
+                Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog();
+                saveFileDialog.DefaultExt = ".svg";
+                saveFileDialog.Filter = "SVG Files|*.svg";
+                if (saveFileDialog.ShowDialog().Value)
+                {
+                    string svgFile = barcodeWriter.Writer.GetBarcodeAsSvgFile();
+                    File.WriteAllText(saveFileDialog.FileName, svgFile);
+                }
             }
         }
 
         void barcodeGroupsTabPages_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (e.OriginalSource != barcodeGroupsTabPages)
+                return;
+
             barcodeWidthDockPanel.Visibility = Visibility.Visible;
             SelectedBarcodeSubset = null;
             BarcodeType oldValue = barcodeWriter.Settings.Barcode;
@@ -1164,6 +1222,7 @@ namespace WpfSimpleBarcodeWriterDemo
                 UpdateUI();
                 EncodeValue();
                 barcodeWriter.Settings.EndInit();
+                e.Handled = true;
             }
             catch (WriterSettingsException exc)
             {
@@ -1247,6 +1306,25 @@ namespace WpfSimpleBarcodeWriterDemo
             }
         }
 
+        private void setImageSizeMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            GetSizeWindow form = new GetSizeWindow();
+            form.WidthValue = barcodeWriter.BarcodeImageWidth;
+            form.HeightValue = barcodeWriter.BarcodeImageHeight;
+            form.UnitsValue = barcodeWriter.BarcodeImageSizeUnits;
+            form.ResolutionValue = barcodeWriter.Settings.Resolution;
+
+            if (form.ShowDialog().Value == true)
+            {
+                barcodeWriter.BeginInit();
+                barcodeWriter.BarcodeImageWidth = form.WidthValue;
+                barcodeWriter.BarcodeImageHeight = form.HeightValue;
+                barcodeWriter.BarcodeImageSizeUnits = form.UnitsValue;
+                barcodeWriter.Settings.Resolution = form.ResolutionValue;
+                barcodeWriter.EndInit();
+            }
+        }
+
         #endregion
 
         #endregion
@@ -1267,10 +1345,11 @@ namespace WpfSimpleBarcodeWriterDemo
 
         private void ShowErrorMessage(WriterSettingsException exception)
         {
-            MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);            
+            MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         #endregion
+
 
     }
 }
