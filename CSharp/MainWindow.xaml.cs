@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,7 +13,6 @@ using Vintasoft.WpfBarcode.SymbologySubsets.GS1;
 using Vintasoft.WpfBarcode.SymbologySubsets.RoyalMailMailmark;
 using Vintasoft.WpfBarcode.GS1;
 using Vintasoft.WpfBarcode.BarcodeStructure;
-
 
 namespace WpfSimpleBarcodeWriterDemo
 {
@@ -154,6 +154,9 @@ namespace WpfSimpleBarcodeWriterDemo
             linearBarcodeTypeComboBox.Items.Add(BarcodeSymbologySubsets.GS1DataBarExpanded);
             linearBarcodeTypeComboBox.Items.Add(BarcodeSymbologySubsets.GS1DataBarExpandedStacked);
             linearBarcodeTypeComboBox.Items.Add(BarcodeSymbologySubsets.ITF14);
+            linearBarcodeTypeComboBox.Items.Add(BarcodeSymbologySubsets.ISBT128);
+            linearBarcodeTypeComboBox.Items.Add(BarcodeSymbologySubsets.HIBCLIC128);
+            linearBarcodeTypeComboBox.Items.Add(BarcodeSymbologySubsets.HIBCLIC39);
 
             // sort supported barcode list
             object[] barcodes = new object[linearBarcodeTypeComboBox.Items.Count];
@@ -188,6 +191,10 @@ namespace WpfSimpleBarcodeWriterDemo
             twoDimensionalBarcodeComboBox.Items.Add(BarcodeSymbologySubsets.XFACompressedDataMatrix);
             twoDimensionalBarcodeComboBox.Items.Add(BarcodeSymbologySubsets.XFACompressedPDF417);
             twoDimensionalBarcodeComboBox.Items.Add(BarcodeSymbologySubsets.XFACompressedQRCode);
+            twoDimensionalBarcodeComboBox.Items.Add(BarcodeSymbologySubsets.ISBT128DataMatrix);
+            twoDimensionalBarcodeComboBox.Items.Add(BarcodeSymbologySubsets.HIBCLICAztecCode);
+            twoDimensionalBarcodeComboBox.Items.Add(BarcodeSymbologySubsets.HIBCLICDataMatrix);
+            twoDimensionalBarcodeComboBox.Items.Add(BarcodeSymbologySubsets.HIBCLICQRCode);
 
 
             linearBarcodeHeight.ValueChanged += new EventHandler<EventArgs>(linearBarcodeHeight_ValueChanged);
@@ -670,17 +677,17 @@ namespace WpfSimpleBarcodeWriterDemo
 
         void pdf417RowsNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            barcodeWriter.Settings.PDF417Rows = pdf417RowsNumericUpDown.Value;
+            barcodeWriter.Settings.PDF417Rows = (int)pdf417RowsNumericUpDown.Value;
         }
 
         void pdf417ColsNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            barcodeWriter.Settings.PDF417Columns = pdf417ColsNumericUpDown.Value;
+            barcodeWriter.Settings.PDF417Columns = (int)pdf417ColsNumericUpDown.Value;
         }
 
         void pdf417RowHeightNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            barcodeWriter.Settings.PDF417RowHeight = pdf417RowHeightNumericUpDown.Value;
+            barcodeWriter.Settings.PDF417RowHeight = (int)pdf417RowHeightNumericUpDown.Value;
         }
 
         void pdf417CompactCheckBox_Checked(object sender, RoutedEventArgs e)
@@ -707,12 +714,12 @@ namespace WpfSimpleBarcodeWriterDemo
 
         void microPdf417ColumnsNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            barcodeWriter.Settings.MicroPDF417Columns = microPdf417ColumnsNumericUpDown.Value;
+            barcodeWriter.Settings.MicroPDF417Columns = (int)microPdf417ColumnsNumericUpDown.Value;
         }
 
         void microPdf417RowHeightNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            barcodeWriter.Settings.MicroPDF417RowHeight = microPdf417RowHeightNumericUpDown.Value;
+            barcodeWriter.Settings.MicroPDF417RowHeight = (int)microPdf417RowHeightNumericUpDown.Value;
         }
 
         #endregion
@@ -789,7 +796,7 @@ namespace WpfSimpleBarcodeWriterDemo
 
         void valueGapNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            barcodeWriter.Settings.ValueGap = valueGapNumericUpDown.Value;
+            barcodeWriter.Settings.ValueGap = (int)valueGapNumericUpDown.Value;
         }
 
         void backgroundColorPicker_SelectedColorChanged(object sender, EventArgs e)
@@ -822,7 +829,7 @@ namespace WpfSimpleBarcodeWriterDemo
 
         void linearBarcodeHeight_ValueChanged(object sender, EventArgs e)
         {
-            barcodeWriter.Settings.Height = linearBarcodeHeight.Value;
+            barcodeWriter.Settings.Height = (int)linearBarcodeHeight.Value;
         }
 
         void encodingInfoCheckBox_Checked(object sender, RoutedEventArgs e)
@@ -1084,12 +1091,12 @@ namespace WpfSimpleBarcodeWriterDemo
 
         void paddingNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            barcodeWriter.Settings.Padding = paddingNumericUpDown.Value;
+            barcodeWriter.Settings.Padding = (int)paddingNumericUpDown.Value;
         }
 
         void minWidthNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            barcodeWriter.Settings.MinWidth = minWidthNumericUpDown.Value;
+            barcodeWriter.Settings.MinWidth = (int)minWidthNumericUpDown.Value;
         }
 
         void pixelFormatComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1140,8 +1147,15 @@ namespace WpfSimpleBarcodeWriterDemo
                 saveFileDialog.Filter = "SVG Files|*.svg";
                 if (saveFileDialog.ShowDialog().Value)
                 {
+                    if (BarcodeGlobalSettings.IsDemoVersion)
+                    {
+                        MessageBox.Show("The evaluation version adds noise to the barcode image.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
                     string svgFile = barcodeWriter.Writer.GetBarcodeAsSvgFile();
                     File.WriteAllText(saveFileDialog.FileName, svgFile);
+                    ProcessStartInfo processInfo = new ProcessStartInfo(saveFileDialog.FileName);
+                    processInfo.UseShellExecute = true;
+                    Process.Start(processInfo);
                 }
             }
         }
@@ -1316,6 +1330,11 @@ namespace WpfSimpleBarcodeWriterDemo
 
             if (form.ShowDialog().Value == true)
             {
+                if (BarcodeGlobalSettings.IsDemoVersion)
+                {
+                    MessageBox.Show("The evaluation version adds noise to the barcode image.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+
                 barcodeWriter.BeginInit();
                 barcodeWriter.BarcodeImageWidth = form.WidthValue;
                 barcodeWriter.BarcodeImageHeight = form.HeightValue;
