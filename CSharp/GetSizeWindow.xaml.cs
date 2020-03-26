@@ -31,7 +31,8 @@ namespace WpfSimpleBarcodeWriterDemo
                 string value = widthValueEditor.Text.Replace(',', '.');
                 try
                 {
-                    return double.Parse(value, CultureInfo.InvariantCulture);
+                    double result = double.Parse(value, CultureInfo.InvariantCulture);
+                    return Math.Min(1000, Math.Max(0, result));
                 }
                 catch (Exception ex)
                 {
@@ -55,7 +56,8 @@ namespace WpfSimpleBarcodeWriterDemo
                 string value = heightValueEditor.Text.Replace(',', '.');
                 try
                 {
-                    return double.Parse(value, CultureInfo.InvariantCulture);
+                    double result = double.Parse(value, CultureInfo.InvariantCulture);
+                    return Math.Min(1000, Math.Max(0, result));
                 }
                 catch (Exception ex)
                 {

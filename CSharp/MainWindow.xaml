@@ -100,7 +100,7 @@
                             </DockPanel>
                             <DockPanel Height="28" Name="barcodeWidthDockPanel" DockPanel.Dock="Top">
                                 <Label Height="28" Name="label3" Width="125">Min bar/cell width</Label>
-                                <cc:NumericUpDown x:Name="minWidthNumericUpDown" Minimum="2" Maximum="1024" Value="3"  Width="65" Height="26"></cc:NumericUpDown>
+                                <cc:NumericUpDown x:Name="minWidthNumericUpDown" Minimum="2" Maximum="512" Value="3"  Width="65" Height="26"></cc:NumericUpDown>
                             </DockPanel>
                             <DockPanel Height="28" DockPanel.Dock="Top">
                                 <Label Height="28" Width="125">Barcode image:</Label>
