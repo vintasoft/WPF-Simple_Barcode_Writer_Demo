@@ -312,10 +312,36 @@
 
                                             <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center">Error correction level</Label>
                                             <ComboBox Name="microQrECCLevelComboBox" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,3,0" />
-                                           
+
                                             <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center">Data mask pattern</Label>
                                             <ComboBox Name="microQrDataMaskPatternComboBox" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,3,0" />
                                         </Grid>
+
+
+                                        <Grid Name="dotCodeSettingsGrid" Visibility="Visible">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="26" />
+                                                <RowDefinition Height="26" />
+                                                <RowDefinition Height="26" />
+                                                <RowDefinition Height="26" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="140" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Height="26">Matrix width</Label>
+                                            <cc:NumericUpDown x:Name="dotCodeWidthNumericUpDown" Increment="1" Minimum="0" Maximum="300" Value="0" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Width="Auto" Margin="0,0,3,0" />
+
+                                            <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Height="26">Matrix height</Label>
+                                            <cc:NumericUpDown x:Name="dotCodeHeightNumericUpDown" Increment="1" Minimum="0" Maximum="300" Value="0" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Width="Auto" Margin="0,0,3,0" />
+
+                                            <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Height="26">Matrix aspect ratio (x0.1)</Label>
+                                            <cc:NumericUpDown x:Name="dotCodeAspectRatioNumericUpDown" Increment="1" Minimum="1" Maximum="200" Value="15" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Width="Auto" Margin="0,0,3,0" />
+
+                                            <CheckBox Name="dotCodeRectangularModulesCheckBox" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center">Rectangular modules</CheckBox>
+                                        </Grid>
+
 
                                         <Grid Name="qrSettingsGrid" Visibility="Collapsed">
                                             <Grid.RowDefinitions>

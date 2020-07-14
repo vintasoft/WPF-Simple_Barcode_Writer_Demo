@@ -51,7 +51,7 @@ namespace WpfSimpleBarcodeWriterDemo
             barcodeGroupsTabPages.SelectionChanged += new SelectionChangedEventHandler(barcodeGroupsTabPages_SelectionChanged);
 
             // default GS1 value
-            _GS1ApplicationIdentifierValues = new GS1ApplicationIdentifierValue[] { 
+            _GS1ApplicationIdentifierValues = new GS1ApplicationIdentifierValue[] {
                 new GS1ApplicationIdentifierValue(
                     GS1ApplicationIdentifiers.FindApplicationIdentifier("01"),
                     "0123456789012C")
@@ -174,6 +174,7 @@ namespace WpfSimpleBarcodeWriterDemo
             twoDimensionalBarcodeComboBox.SelectionChanged += new SelectionChangedEventHandler(twoDimensionalBarcodeComboBox_SelectionChanged);
             twoDimensionalBarcodeComboBox.Items.Add(BarcodeType.Aztec);
             twoDimensionalBarcodeComboBox.Items.Add(BarcodeType.DataMatrix);
+            twoDimensionalBarcodeComboBox.Items.Add(BarcodeType.DotCode);
             twoDimensionalBarcodeComboBox.Items.Add(BarcodeType.PDF417);
             twoDimensionalBarcodeComboBox.Items.Add(BarcodeType.MicroPDF417);
             twoDimensionalBarcodeComboBox.Items.Add(BarcodeType.QR);
@@ -182,6 +183,7 @@ namespace WpfSimpleBarcodeWriterDemo
             twoDimensionalBarcodeComboBox.Items.Add(BarcodeType.HanXinCode);
             twoDimensionalBarcodeComboBox.Items.Add(BarcodeSymbologySubsets.GS1Aztec);
             twoDimensionalBarcodeComboBox.Items.Add(BarcodeSymbologySubsets.GS1DataMatrix);
+            twoDimensionalBarcodeComboBox.Items.Add(BarcodeSymbologySubsets.GS1DotCode);
             twoDimensionalBarcodeComboBox.Items.Add(BarcodeSymbologySubsets.GS1QR);
             twoDimensionalBarcodeComboBox.Items.Add(BarcodeSymbologySubsets.MailmarkCmdmType7);
             twoDimensionalBarcodeComboBox.Items.Add(BarcodeSymbologySubsets.MailmarkCmdmType9);
@@ -265,6 +267,13 @@ namespace WpfSimpleBarcodeWriterDemo
 
             AddEnumValues(datamatrixSymbolSizeComboBox, typeof(DataMatrixSymbolType));
             datamatrixSymbolSizeComboBox.SelectionChanged += new SelectionChangedEventHandler(datamatrixSymbolSizeComboBox_SelectionChanged);
+
+            // DotCode
+            dotCodeWidthNumericUpDown.ValueChanged += DotCodeWidthNumericUpDown_ValueChanged;
+            dotCodeHeightNumericUpDown.ValueChanged += DotCodeHeightNumericUpDown_ValueChanged;
+            dotCodeAspectRatioNumericUpDown.ValueChanged += DotCodeAspectRatioNumericUpDown_ValueChanged;
+            dotCodeRectangularModulesCheckBox.Checked += DotCodeRectangularModulesCheckBox_CheckedChanged;
+            dotCodeRectangularModulesCheckBox.Unchecked += DotCodeRectangularModulesCheckBox_CheckedChanged;
 
             // QR Code
             AddEnumValues(qrEncodingModeComboBox, typeof(QREncodingMode));
@@ -569,6 +578,29 @@ namespace WpfSimpleBarcodeWriterDemo
         void datamatrixSymbolSizeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             barcodeWriter.Settings.DataMatrixSymbol = (DataMatrixSymbolType)datamatrixSymbolSizeComboBox.SelectedItem;
+        }
+
+        #endregion
+
+        #region DotCode
+        private void DotCodeHeightNumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            barcodeWriter.Settings.DotCodeMatrixHeight = (int)dotCodeHeightNumericUpDown.Value;
+        }
+
+        private void DotCodeWidthNumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            barcodeWriter.Settings.DotCodeMatrixWidth = (int)dotCodeWidthNumericUpDown.Value;
+        }
+
+        private void DotCodeAspectRatioNumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            barcodeWriter.Settings.DotCodeMatrixWidthHeightRatio = dotCodeAspectRatioNumericUpDown.Value / 10.0;
+        }
+
+        private void DotCodeRectangularModulesCheckBox_CheckedChanged(object sender, RoutedEventArgs e)
+        {
+            barcodeWriter.Settings.DotCodeRectangularModules = dotCodeRectangularModulesCheckBox.IsChecked.Value;
         }
 
         #endregion
@@ -1013,6 +1045,7 @@ namespace WpfSimpleBarcodeWriterDemo
             hanXinCodeSettingsGrid.Visibility = Visibility.Collapsed;
             qrSettingsGrid.Visibility = Visibility.Collapsed;
             microPDF417SettingsGrid.Visibility = Visibility.Collapsed;
+            dotCodeSettingsGrid.Visibility = Visibility.Collapsed;
 
             BarcodeSymbologySubset barcodeSubset = twoDimensionalBarcodeComboBox.SelectedItem as BarcodeSymbologySubset;
             BarcodeType baseBarcodeType;
@@ -1065,6 +1098,9 @@ namespace WpfSimpleBarcodeWriterDemo
                             dataMatrixSettingsGrid.Visibility = Visibility.Visible;
                             datamatrixSymbolSizeComboBox_SelectionChanged(this, null);
                         }
+                        break;
+                    case BarcodeType.DotCode:
+                        dotCodeSettingsGrid.Visibility = Visibility.Visible;
                         break;
                     case BarcodeType.MaxiCode:
                         maxiCodeSettingsGrid.Visibility = Visibility.Visible;
@@ -1153,6 +1189,7 @@ namespace WpfSimpleBarcodeWriterDemo
                     }
                     string svgFile = barcodeWriter.Writer.GetBarcodeAsSvgFile();
                     File.WriteAllText(saveFileDialog.FileName, svgFile);
+
                     ProcessStartInfo processInfo = new ProcessStartInfo(saveFileDialog.FileName);
                     processInfo.UseShellExecute = true;
                     Process.Start(processInfo);
