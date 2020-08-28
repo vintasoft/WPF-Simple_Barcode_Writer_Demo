@@ -28,6 +28,8 @@ namespace WpfSimpleBarcodeWriterDemo
 
         MailmarkCmdmValueItem _mailmarkCmdmValueItem = new MailmarkCmdmValueItem();
 
+        SwissQRCodeValueItem _swissQRCodeValueItem = new SwissQRCodeValueItem();
+
         PpnBarcodeValue _ppnBarcodeValue = new PpnBarcodeValue();
 
         bool _isInitialized = false;
@@ -197,6 +199,7 @@ namespace WpfSimpleBarcodeWriterDemo
             twoDimensionalBarcodeComboBox.Items.Add(BarcodeSymbologySubsets.HIBCLICAztecCode);
             twoDimensionalBarcodeComboBox.Items.Add(BarcodeSymbologySubsets.HIBCLICDataMatrix);
             twoDimensionalBarcodeComboBox.Items.Add(BarcodeSymbologySubsets.HIBCLICQRCode);
+            twoDimensionalBarcodeComboBox.Items.Add(BarcodeSymbologySubsets.SwissQRCode);
 
 
             linearBarcodeHeight.ValueChanged += new EventHandler<EventArgs>(linearBarcodeHeight_ValueChanged);
@@ -893,6 +896,11 @@ namespace WpfSimpleBarcodeWriterDemo
                     //  encode Mailmark barcode value
                     barcodeWriter.Settings.ValueItems = new ValueItemBase[] { _mailmarkCmdmValueItem };
                 }
+                else if (SelectedBarcodeSubset is SwissQRCodeBarcodeSymbology)
+                {
+                    //  encode Swiss QR Code barcode value
+                    barcodeWriter.Settings.ValueItems = new ValueItemBase[] { _swissQRCodeValueItem };
+                }
                 else if (SelectedBarcodeSubset is PpnBarcodeSymbology)
                 {
                     //  encode PPN barcode value
@@ -1307,6 +1315,7 @@ namespace WpfSimpleBarcodeWriterDemo
             if (SelectedBarcodeSubset != null &&
                 SelectedBarcodeSubset is GS1BarcodeSymbologySubset ||
                 SelectedBarcodeSubset is MailmarkCmdmBarcodeSymbology ||
+                SelectedBarcodeSubset is SwissQRCodeBarcodeSymbology ||
                 SelectedBarcodeSubset is PpnBarcodeSymbology)
                 useCustomValueDialog = true;
             if (useCustomValueDialog)
@@ -1336,6 +1345,15 @@ namespace WpfSimpleBarcodeWriterDemo
             else if (SelectedBarcodeSubset is MailmarkCmdmBarcodeSymbology)
             {
                 PropertyGridWindow form = new PropertyGridWindow(_mailmarkCmdmValueItem, "Mailmark CMDM value", false);
+                form.PropertyGrid.PropertySort = System.Windows.Forms.PropertySort.NoSort;
+                if (form.ShowDialog().Value)
+                {
+                    EncodeValue();
+                }
+            }
+            else if (SelectedBarcodeSubset is SwissQRCodeBarcodeSymbology)
+            {
+                PropertyGridWindow form = new PropertyGridWindow(_swissQRCodeValueItem, "Swiss QR Code value", false);
                 form.PropertyGrid.PropertySort = System.Windows.Forms.PropertySort.NoSort;
                 if (form.ShowDialog().Value)
                 {
