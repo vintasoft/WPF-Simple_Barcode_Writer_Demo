@@ -1058,7 +1058,7 @@ namespace WpfSimpleBarcodeWriterDemo
             BarcodeSymbologySubset barcodeSubset = twoDimensionalBarcodeComboBox.SelectedItem as BarcodeSymbologySubset;
             BarcodeType baseBarcodeType;
             if (barcodeSubset != null)
-                baseBarcodeType = barcodeSubset.BaseType;
+                baseBarcodeType = barcodeSubset.BarcodeType;
             else
                 baseBarcodeType = (BarcodeType)twoDimensionalBarcodeComboBox.SelectedItem;
 
@@ -1236,7 +1236,7 @@ namespace WpfSimpleBarcodeWriterDemo
                     SelectedBarcodeSubset = barcodeSubset;
                     BarcodeType baseBarcodeType;
                     if (barcodeSubset != null)
-                        baseBarcodeType = barcodeSubset.BaseType;
+                        baseBarcodeType = barcodeSubset.BarcodeType;
                     else
                         baseBarcodeType = (BarcodeType)twoDimensionalBarcodeComboBox.SelectedItem;
 
