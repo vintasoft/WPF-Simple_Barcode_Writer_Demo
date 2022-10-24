@@ -131,6 +131,9 @@ namespace CustomControls
 
         #region Methods
 
+        /// <summary>
+        /// Raises the <see cref="ColorPicker.OnSelectedColorChanged"/> event.
+        /// </summary>
         protected virtual void OnSelectedColorChanged()
         {
             if (SelectedColorChanged != null)
@@ -149,6 +152,9 @@ namespace CustomControls
 
         #region Events
 
+        /// <summary>
+        /// Occurs when selected color is changed.
+        /// </summary>
         public event EventHandler SelectedColorChanged;
 
         #endregion

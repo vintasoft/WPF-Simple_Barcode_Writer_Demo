@@ -59,6 +59,9 @@ namespace CustomControls
             OnSelectedFamilyChanged();
         }
 
+        /// <summary>
+        /// Raises the <see cref="FontFamilySelector.OnSelectedFamilyChanged"/> event.
+        /// </summary>
         protected virtual void OnSelectedFamilyChanged()
         {
             if (SelectedFamilyChanged != null)

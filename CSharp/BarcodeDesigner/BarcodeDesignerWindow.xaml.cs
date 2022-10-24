@@ -5,9 +5,9 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 
-using Vintasoft.WpfBarcode;
-using Vintasoft.WpfBarcode.BarcodeStructure;
-
+using Vintasoft.Barcode;
+using Vintasoft.Barcode.BarcodeStructure;
+using Vintasoft.Barcode.Wpf;
 
 namespace WpfSimpleBarcodeWriterDemo
 {
@@ -343,7 +343,7 @@ namespace WpfSimpleBarcodeWriterDemo
             if (_barcode != null)
             {
                 barcodeStructureControl.RenderingScale = _previewScale;
-                Int32Rect barcodeBoundingBox = _barcode.GetBoundingBox();
+                Int32Rect barcodeBoundingBox = WpfConverter.Convert(_barcode.GetBoundingBox());
                 int width = (int)Math.Round((barcodeBoundingBox.Width + 2) * PreviewScale);
                 int height = (int)Math.Round((barcodeBoundingBox.Height + 2) * PreviewScale);
                 barcodeStructureControl.Width = width;
@@ -448,7 +448,7 @@ namespace WpfSimpleBarcodeWriterDemo
         /// Updates the barcode image when the barcode renderer property was changed.
         /// </summary>
         /// <param name="s">The source of the event.</param>
-        /// <param name="e">The <see cref="PropertyValueChangedEventArgs"/> instance
+        /// <param name="e">The <see cref="System.Windows.Forms.PropertyValueChangedEventArgs"/> instance
         /// containing the event data.</param>
         private void barcodeRendererPropertyGrid_PropertyValueChanged(
             object s,

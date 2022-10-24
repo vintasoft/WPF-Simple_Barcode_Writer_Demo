@@ -2,8 +2,8 @@
 using System.Windows;
 using System.Windows.Media;
 
-using Vintasoft.WpfBarcode;
-using Vintasoft.WpfBarcode.BarcodeStructure;
+using Vintasoft.Barcode;
+using Vintasoft.Barcode.BarcodeStructure;
 
 
 namespace WpfSimpleBarcodeWriterDemo

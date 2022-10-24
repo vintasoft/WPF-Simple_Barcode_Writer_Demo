@@ -2,7 +2,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:WindowsForms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
-    xmlns:WpfBarcode="clr-namespace:Vintasoft.WpfBarcode;assembly=Vintasoft.WpfBarcode"
+    xmlns:WpfBarcode="clr-namespace:Vintasoft.Barcode.Wpf;assembly=Vintasoft.Barcode.Wpf"
     Title="BarcodeDesignerWindow" 
     Width="800" Height="600"
     MinWidth="385" MinHeight="540" >

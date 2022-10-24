@@ -6,13 +6,12 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-using Vintasoft.WpfBarcode;
-using Vintasoft.WpfBarcode.BarcodeInfo;
-using Vintasoft.WpfBarcode.SymbologySubsets;
-using Vintasoft.WpfBarcode.SymbologySubsets.GS1;
-using Vintasoft.WpfBarcode.SymbologySubsets.RoyalMailMailmark;
-using Vintasoft.WpfBarcode.GS1;
-using Vintasoft.WpfBarcode.BarcodeStructure;
+using Vintasoft.Barcode;
+using Vintasoft.Barcode.BarcodeInfo;
+using Vintasoft.Barcode.BarcodeStructure;
+using Vintasoft.Barcode.GS1;
+using Vintasoft.Barcode.SymbologySubsets;
+using Vintasoft.Barcode.Wpf;
 
 namespace WpfSimpleBarcodeWriterDemo
 {
@@ -40,6 +39,22 @@ namespace WpfSimpleBarcodeWriterDemo
 
         #region Constructor
 
+        /// <summary>
+        /// Initializes the <see cref="MainWindow"/> class.
+        /// </summary>
+        static MainWindow()
+        {
+#if NETCOREAPP
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+#endif
+
+            // initialize Vintasoft.Barcode.Wpf Assembly
+            Vintasoft.Barcode.WpfAssembly.Init();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainWindow"/> class.
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -811,12 +826,12 @@ namespace WpfSimpleBarcodeWriterDemo
 
         void valueFontSizeNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            barcodeWriter.Settings.ValueFontEmSize = valueFontSizeNumericUpDown.Value;
+            barcodeWriter.Settings.ValueFont = WpfConverter.Convert(new Typeface(fontFamilySelector.SelectedFamily.Source), valueFontSizeNumericUpDown.Value);
         }
 
         void fontFamilySelector_SelectedFamilyChanged(object sender, EventArgs e)
         {
-            barcodeWriter.Settings.ValueFontTypeface = new Typeface(fontFamilySelector.SelectedFamily.Source);
+            barcodeWriter.Settings.ValueFont = WpfConverter.Convert(new Typeface(fontFamilySelector.SelectedFamily.Source), valueFontSizeNumericUpDown.Value);
         }
 
         void barsRatioNumericUpDown_ValueChanged(object sender, EventArgs e)
@@ -836,12 +851,12 @@ namespace WpfSimpleBarcodeWriterDemo
 
         void backgroundColorPicker_SelectedColorChanged(object sender, EventArgs e)
         {
-            barcodeWriter.Settings.BackColor = backgroundColorPicker.SelectedColor;
+            barcodeWriter.Settings.BackColor = WpfConverter.Convert(backgroundColorPicker.SelectedColor);
         }
 
         void foregroundColorPicker_SelectedColorChanged(object sender, EventArgs e)
         {
-            barcodeWriter.Settings.ForeColor = foregroundColorPicker.SelectedColor;
+            barcodeWriter.Settings.ForeColor = WpfConverter.Convert(foregroundColorPicker.SelectedColor);
         }
 
         void valueVisibleCheckBox_CheckedChanged(object sender, RoutedEventArgs e)

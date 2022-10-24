@@ -4,7 +4,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 
-using Vintasoft.WpfBarcode.GS1;
+using Vintasoft.Barcode.GS1;
 
 
 namespace WpfSimpleBarcodeWriterDemo
@@ -94,6 +94,9 @@ namespace WpfSimpleBarcodeWriterDemo
 
         #region Constructor
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GS1ValueEditorWindow"/> class.
+        /// </summary>
         public GS1ValueEditorWindow(GS1ApplicationIdentifierValue[] gs1ApplicationIdentifierValues, bool readOnly)
         {
             InitializeComponent();
@@ -136,6 +139,9 @@ namespace WpfSimpleBarcodeWriterDemo
         #region Properties
 
         GS1ApplicationIdentifierValue[] _GS1ApplicationIdentifierValues;
+        /// <summary>
+        /// Gets the GS1 application identifier values.
+        /// </summary>
         public GS1ApplicationIdentifierValue[] GS1ApplicationIdentifierValues
         {
             get

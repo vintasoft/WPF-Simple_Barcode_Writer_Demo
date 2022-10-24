@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows;
-using Vintasoft.WpfBarcode;
+using Vintasoft.Barcode;
 
 namespace WpfSimpleBarcodeWriterDemo
 {
@@ -10,6 +10,9 @@ namespace WpfSimpleBarcodeWriterDemo
     /// </summary>
     public partial class GetSizeWindow : Window
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GetSizeWindow"/> class.
+        /// </summary>
         public GetSizeWindow()
         {
             InitializeComponent();

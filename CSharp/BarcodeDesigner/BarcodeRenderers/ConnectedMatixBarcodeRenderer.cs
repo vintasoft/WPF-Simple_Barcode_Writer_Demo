@@ -4,8 +4,8 @@ using System.Windows;
 using System.Windows.Media;
 using System.Collections.Generic;
 
-using Vintasoft.WpfBarcode;
-using Vintasoft.WpfBarcode.BarcodeStructure;
+using Vintasoft.Barcode;
+using Vintasoft.Barcode.BarcodeStructure;
 
 
 namespace WpfSimpleBarcodeWriterDemo
@@ -190,7 +190,7 @@ namespace WpfSimpleBarcodeWriterDemo
         public override void Render()
         {
             // create cached matrix that stores connection condition for cells
-            Int32Rect barcodeBBox = BarcodeElement.GetBoundingBox();
+            Int32Rect barcodeBBox = WpfConverter.Convert(BarcodeElement.GetBoundingBox());
             _barcodeX = barcodeBBox.X;
             _barcodeY = barcodeBBox.Y;
             _canConnectCellMatrix = new bool[barcodeBBox.Height, barcodeBBox.Width];
