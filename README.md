@@ -4,7 +4,7 @@ This C# project uses <a href="https://www.vintasoft.com/vsbarcode-dotnet-index.h
 
 
 ## Screenshot
-<img src="vintasoft-wpf-simple-barcode-writer-demo.png" alt="VintaSoft WPF Simple Barcode Writer Demo">
+<img src="vintasoft-wpf-simple-barcode-writer-demo.png" title="VintaSoft WPF Simple Barcode Writer Demo">
 
 
 ## Usage
