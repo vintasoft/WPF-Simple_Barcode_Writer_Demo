@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net7.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
@@ -19,7 +19,7 @@
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>    
 
-    <Version>14.2.2.1</Version>
+    <Version>14.3.0.1</Version>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,9 +39,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Vintasoft.Barcode" Version="14.2.2.1" />
-    <PackageReference Include="Vintasoft.Barcode.Wpf" Version="14.2.2.1" />
+    <PackageReference Include="Vintasoft.Barcode" Version="14.3.0.1" />
+    <PackageReference Include="Vintasoft.Barcode.Wpf" Version="14.3.0.1" />
     <PackageReference Include="Vintasoft.Shared" Version="4.1.2.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

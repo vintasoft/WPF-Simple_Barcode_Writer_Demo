@@ -161,7 +161,7 @@ namespace WpfSimpleBarcodeWriterDemo
         /// a "black cell" of barcode.<br />
         /// This parameter is used for calculating the color of "white cell"
         /// relatively the color of "black cell".<br />
-        /// Barcode with high modulation has better chanсes for recognition.
+        /// Barcode with high modulation has better chances for recognition.
         /// </remarks>
         /// <value>
         /// <b>0</b> - the "white cells" and "black cells" will be filled

@@ -160,6 +160,7 @@ namespace WpfSimpleBarcodeWriterDemo
             linearBarcodeTypeComboBox.Items.Add(BarcodeType.UPCEPlus2);
             linearBarcodeTypeComboBox.Items.Add(BarcodeType.UPCEPlus5);
             linearBarcodeTypeComboBox.Items.Add(BarcodeType.AustralianPost);
+            linearBarcodeTypeComboBox.Items.Add(BarcodeType.JapanPost);
             linearBarcodeTypeComboBox.Items.Add(BarcodeType.IntelligentMail);
             linearBarcodeTypeComboBox.Items.Add(BarcodeType.Planet);
             linearBarcodeTypeComboBox.Items.Add(BarcodeType.Postnet);
@@ -1010,6 +1011,7 @@ namespace WpfSimpleBarcodeWriterDemo
                     break;
                 case BarcodeType.RoyalMail:
                 case BarcodeType.DutchKIX:
+                case BarcodeType.JapanPost:
                 case BarcodeType.IntelligentMail:
                 case BarcodeType.Postnet:
                 case BarcodeType.Planet:
