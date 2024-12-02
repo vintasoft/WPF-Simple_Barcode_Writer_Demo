@@ -19,7 +19,7 @@
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>    
 
-    <Version>15.0.11.1</Version>
+    <Version>15.1.0.1</Version>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,9 +39,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Vintasoft.Barcode" Version="15.0.11.1" />
-    <PackageReference Include="Vintasoft.Barcode.Wpf" Version="15.0.11.1" />
-    <PackageReference Include="Vintasoft.Shared" Version="4.3.0.1" />
+    <PackageReference Include="Vintasoft.Barcode" Version="15.1.0.1" />
+    <PackageReference Include="Vintasoft.Barcode.Wpf" Version="15.1.0.1" />
+    <PackageReference Include="Vintasoft.Shared" Version="4.4.0.1" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
