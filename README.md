@@ -1,4 +1,4 @@
-# VintaSoft WPF Simple Barcode Writer Demo
+﻿# VintaSoft WPF Simple Barcode Writer Demo
 
 This C# project uses <a href="https://www.vintasoft.com/vsbarcode-dotnet-index.html">VintaSoft Barcode .NET SDK</a> and demonstrates how to generate barcode images in WPF.
 
