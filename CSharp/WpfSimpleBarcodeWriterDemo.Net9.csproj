@@ -19,7 +19,7 @@
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>    
 
-    <Version>16.0.1.1</Version>
+    <Version>16.0.2.1</Version>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,8 +40,8 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.0" />
-    <PackageReference Include="Vintasoft.Barcode" Version="16.0.1.1" />
-    <PackageReference Include="Vintasoft.Barcode.Wpf" Version="16.0.1.1" />
+    <PackageReference Include="Vintasoft.Barcode" Version="16.0.2.1" />
+    <PackageReference Include="Vintasoft.Barcode.Wpf" Version="16.0.2.1" />
     <PackageReference Include="Vintasoft.Shared" Version="4.6.1.1" />
   </ItemGroup>
   <ItemGroup>
