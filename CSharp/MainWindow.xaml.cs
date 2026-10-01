@@ -57,6 +57,9 @@ namespace WpfSimpleBarcodeWriterDemo
         /// </summary>
         public MainWindow()
         {
+            // register the evaluation license for VintaSoft Barcode .NET SDK
+            Vintasoft.Barcode.BarcodeGlobalSettings.Register("REG_USER", "REG_EMAIL", "EXPIRATION_DATE", "REG_CODE");
+
             InitializeComponent();
 
             Title = "VintaSoft WPF Simple Barcode Writer Demo v" + BarcodeGlobalSettings.ProductVersion;
